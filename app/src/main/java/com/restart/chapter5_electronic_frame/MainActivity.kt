@@ -36,6 +36,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     private val imageUriList: MutableList<Uri> =  mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
