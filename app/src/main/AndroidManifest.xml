@@ -25,7 +25,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".PhotoFrameActivity"/>
+        <activity android:name=".PhotoFrameActivity"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:screenOrientation="landscape"/>
 
     </application>
 
