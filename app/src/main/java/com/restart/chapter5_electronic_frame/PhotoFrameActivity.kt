@@ -2,8 +2,10 @@ package com.restart.chapter5_electronic_frame
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import java.util.*
 import kotlin.concurrent.timer
 
 class PhotoFrameActivity: AppCompatActivity(){
@@ -11,6 +13,9 @@ class PhotoFrameActivity: AppCompatActivity(){
     private val photoList = mutableListOf<Uri>()
 
     private var currentPosition = 0
+
+    private var timer : Timer? = null
+
 
     private val photoImageView: ImageView by lazy {
         findViewById(R.id.photoImageView)
@@ -26,8 +31,7 @@ class PhotoFrameActivity: AppCompatActivity(){
 
         getPhotoUriFromIntent()
 
-        startTimer()
-
+        Log.d("PhotoFrame","onCreate!!")
     }
 
     private fun getPhotoUriFromIntent(){
@@ -42,7 +46,9 @@ class PhotoFrameActivity: AppCompatActivity(){
 
     private fun startTimer(){
         //타이머 객체를 통해 5초마다 반복되도록.
-        timer(period = 5000){
+      timer = timer(period = 5000){
+
+          Log.d("PhotoFrame","스타트 타이머!! 5초마다 실행")
 
             //timer는 메인쓰레드가 아니므로 runOnUiThread내에서 작업하여 메인쓰레드로 변환해줌. 메인쓰레드가 아닌곳에서 UI를 건들면 앱이 죽는다.
             runOnUiThread {
@@ -63,5 +69,32 @@ class PhotoFrameActivity: AppCompatActivity(){
                 currentPosition = next
             }
         }
+    }
+    //바탕화면 보기 버튼 누른경우 등으로 앱이 실행되지 않을 때
+    override fun onStop() {
+        super.onStop()
+
+        Log.d("PhotoFrame","onStop!! timer cancel")
+
+        timer?.cancel() //타이머 종료
+
+    }
+
+    //온스타트 상태로 들온 경우 스타트 타이머 실행.
+    override fun onStart() {
+        super.onStart()
+
+        Log.d("PhotoFrame","onStart!! timer Start")
+
+        startTimer() // onCreate함수에서 startTimer()를 실행하면 한번밖에 실행되지 않기 때문에 onStart()로 startTimer()를 이동시켜줌.
+    }
+
+    //앱이 완전히 종료되었을 때 타이머 종료.
+    override fun onDestroy() {
+        super.onDestroy()
+
+        Log.d("PhotoFrame","onDestroy!! timer cancel")
+
+        timer?.cancel()
     }
 }
