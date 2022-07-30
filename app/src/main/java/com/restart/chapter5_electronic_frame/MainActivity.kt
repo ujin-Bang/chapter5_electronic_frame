@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         initStartPhotoFrameModeButton()
     }
 
+    //사진 추가하기 버튼 클릭이벤트
     private fun initAddPhotoButton(){
 
         addPhotoButton.setOnClickListener {
@@ -67,6 +68,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    //전자 액자 실행하기 버튼 클릭이벤트
+    private fun initStartPhotoFrameModeButton(){
+
+        //imageUirList에 저장된 uri타입의 사진 목록 첨부해서 보내기.
+        startPhotoFrameModeButton.setOnClickListener {
+            val intent = Intent(this, PhotoFrameActivity::class.java)
+            imageUriList.forEachIndexed { index, uri ->
+                intent.putExtra("photo$index", uri.toString())
+            }
+            intent.putExtra("photoListSize", imageUriList.size)
+            startActivity(intent)
+        }
     }
 
     //권한요청 => requestPermssions 콜백함수.
@@ -146,7 +161,4 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun initStartPhotoFrameModeButton(){
-
-    }
 }
